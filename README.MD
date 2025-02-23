@@ -1,22 +1,19 @@
 # ESPHome Inverter Monitor
-
 A project to monitor inverters through ESPHome in Home Assistant, providing real-time data monitoring.
 
 ## Prerequisites
-
 - Home Assistant with ESPHome installed
 - ESP32 (DOIT DevKit V1)
 - UART connection to inverter (TX: GPIO17, RX: GPIO16)
 
 ## Features
-
 - Real-time monitoring of inverter parameters:
   - Input/Output voltage and frequency
   - Battery voltage and charging current
   - Power metrics (apparent, active, power factor)
   - Temperature and load percentage
   - System status and operation mode
-
+  - Error detection and reporting
 - Connectivity:
   - WiFi connectivity with fallback AP mode
   - Home Assistant API integration
@@ -26,8 +23,19 @@ A project to monitor inverters through ESPHome in Home Assistant, providing real
 - Two relay outputs for external control (GPIO22, GPIO18)
 - Status LED (GPIO2)
 
-## Installation
+## Error Codes
+The system can detect and report the following error conditions:
+- 02: Over Temperature
+- 03: Battery Voltage Too High
+- 04: Battery Voltage Too Low
+- 05: Output Short Circuit
+- 06: Output Too High
+- 07: Overload
+- 08: Output Too Low
+- 98: Transformer Over Temperature
+- 99: Fail to Slow Start
 
+## Installation
 1. In Home Assistant, go to ESPHome dashboard
 2. Click on "+ NEW DEVICE"
 3. Select your ESP32
@@ -61,7 +69,6 @@ substitutions:
 ```
 
 ## Communication Protocol
-
 The device communicates with the inverter using UART with the following specifications:
 - Baud rate: 2400
 - Data bits: 8
@@ -70,23 +77,21 @@ The device communicates with the inverter using UART with the following specific
 - Buffer size: 256 bytes
 
 ## Sensors
-
 The project includes various sensor types:
 - Text sensors for status information and version
 - Binary sensors for system status and operation modes
 - Numeric sensors for all measured values (voltage, current, power, etc.)
+- Error status sensor with detailed error descriptions
 
 ## Troubleshooting
-
 - Check device logs in ESPHome dashboard
 - Verify UART connections and baud rate
 - Ensure proper WiFi credentials in secrets.yaml
 - Monitor the "Last Response" sensor for raw communication data
+- Check the Error Code sensor for any reported issues
 
 ## Contributing
-
 Feel free to report issues and propose improvements.
 
 ## License
-
 This project is open source. Feel free to use and modify as needed.
