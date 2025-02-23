@@ -78,6 +78,12 @@ button:
 
 # Text Sensors
 text_sensor:
+    - platform: template
+    name: "Error Code"
+    id: error_code
+    icon: "mdi:alert"
+    update_interval: never
+
   - platform: template
     name: "Last Response"
     id: last_response
@@ -359,6 +365,47 @@ interval:
                     id(line_mode).publish_state(true);
                 }
                 
+                 // Error code (position 15)
+                if(values.size() >= 16) {
+              std::string error = values[15];
+              std::string error_message;
+              
+              if(error == "00") {
+                  error_message = "No Error";
+              }
+              else if(error == "02") {
+                  error_message = "Error 02: Over Temperature";
+              }
+              else if(error == "03") {
+                  error_message = "Error 03: Battery Voltage Too High";
+              }
+              else if(error == "04") {
+                  error_message = "Error 04: Battery Voltage Too Low";
+              }
+              else if(error == "05") {
+                  error_message = "Error 05: Output Short Circuit";
+              }
+              else if(error == "06") {
+                  error_message = "Error 06: Output Too High";
+              }
+              else if(error == "07") {
+                  error_message = "Error 07: Overload";
+              }
+              else if(error == "08") {
+                  error_message = "Error 08: Output Too Low";
+              }
+              else if(error == "98") {
+                  error_message = "Error 98: Transformer Over Temperature";
+              }
+              else if(error == "99") {
+                  error_message = "Error 99: Fail to Slow Start";
+              }
+              else {
+                  error_message = "Error " + error + ": Unknown Error";
+              }
+              
+              id(error_code).publish_state(error_message);
+          }
                 // Update version if available
                 if(values.size() >= 18) {
                     id(inverter_version).publish_state(values[17]);
